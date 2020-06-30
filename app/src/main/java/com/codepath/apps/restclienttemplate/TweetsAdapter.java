@@ -70,6 +70,7 @@ public class TweetsAdapter  extends RecyclerView.Adapter<TweetsAdapter.ViewHolde
         ImageView ivProfileImage;
         TextView tvBody;
         TextView tvScreenName;
+        TextView timeStamp;
 
 
         //For each row inflate a layout
@@ -80,11 +81,13 @@ public class TweetsAdapter  extends RecyclerView.Adapter<TweetsAdapter.ViewHolde
             ivProfileImage = itemView.findViewById(R.id.ivProfileImage);
             tvBody = itemView.findViewById(R.id.tvBody);
             tvScreenName = itemView.findViewById(R.id.tvScreenName);
+            timeStamp = itemView.findViewById(R.id.timeStamp);
         }
 
         public void bind(Tweet tweet) {
             tvBody.setText(tweet.body);
             tvScreenName.setText(tweet.user.screenName);
+            timeStamp.setText(tweet.createdAt);
             Glide.with(context).load(tweet.user.profileImageUrl).into(ivProfileImage);
         }
     }

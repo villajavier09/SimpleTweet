@@ -34,4 +34,14 @@
         android:layout_marginTop="2dp"
         android:layout_toEndOf="@+id/ivProfileImage"
         tools:text="My First Tweet!" />
+
+    <TextView
+        android:id="@+id/timeStamp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentEnd="true"
+        android:layout_marginStart="41dp"
+        android:layout_marginEnd="-21dp"
+        android:layout_toEndOf="@+id/tvScreenName"
+        tools:text="time" />
 </RelativeLayout>
