@@ -71,6 +71,7 @@ public class TweetsAdapter  extends RecyclerView.Adapter<TweetsAdapter.ViewHolde
         TextView tvBody;
         TextView tvScreenName;
         TextView timeStamp;
+        ImageView tweetImage;
 
 
         //For each row inflate a layout
@@ -82,6 +83,7 @@ public class TweetsAdapter  extends RecyclerView.Adapter<TweetsAdapter.ViewHolde
             tvBody = itemView.findViewById(R.id.tvBody);
             tvScreenName = itemView.findViewById(R.id.tvScreenName);
             timeStamp = itemView.findViewById(R.id.timeStamp);
+            tweetImage = itemView.findViewById(R.id.tweetImage);
         }
 
         public void bind(Tweet tweet) {
@@ -89,6 +91,12 @@ public class TweetsAdapter  extends RecyclerView.Adapter<TweetsAdapter.ViewHolde
             tvScreenName.setText(tweet.user.screenName);
             timeStamp.setText(tweet.createdAt);
             Glide.with(context).load(tweet.user.profileImageUrl).into(ivProfileImage);
+            if(tweet.imageUrl != null) {
+                Glide.with(context).load(tweet.imageUrl).into(tweetImage);
+            }
+            else{
+                tweetImage.setVisibility(View.GONE);
+            }
         }
     }
 }

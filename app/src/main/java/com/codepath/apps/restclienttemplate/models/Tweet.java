@@ -1,6 +1,7 @@
 package com.codepath.apps.restclienttemplate.models;
 
 import android.text.format.DateUtils;
+import android.util.Log;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -18,6 +19,8 @@ public class Tweet {
     public String body;
     public String createdAt;
     public User user;
+    public String imageUrl;
+    public static final String TAG = "Tweet";
 
 
     public Tweet(){}
@@ -28,6 +31,13 @@ public class Tweet {
         tweet.body = jsonObject.getString("text");
         tweet.createdAt = getRelativeTimeAgo(jsonObject.getString("created_at"));
         tweet.user = User.fromJson(jsonObject.getJSONObject("user"));
+        try{
+            tweet.imageUrl = jsonObject.getJSONObject("entities").getJSONArray("media").getJSONObject(0).getString("media_url_https");
+            Log.d(TAG, "imageurl is: "+tweet.imageUrl);
+        }
+        catch (Exception e){
+            Log.e(TAG,"no image found");
+        }
 
         return tweet;
     }
@@ -50,7 +60,7 @@ public class Tweet {
         try {
             long dateMillis = sf.parse(rawJsonDate).getTime();
             relativeDate = DateUtils.getRelativeTimeSpanString(dateMillis,
-                    System.currentTimeMillis(), DateUtils.SECOND_IN_MILLIS).toString();
+                    System.currentTimeMillis(), DateUtils.SECOND_IN_MILLIS, DateUtils.FORMAT_ABBREV_ALL).toString();
         } catch (ParseException e) {
             e.printStackTrace();
         }
