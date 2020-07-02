@@ -1,10 +1,38 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".TimelineActivity">
+    tools:context=".TimelineActivity"
+
+    android:fitsSystemWindows="true"
+    android:orientation="vertical">
+
+    <androidx.appcompat.widget.Toolbar
+        android:id="@+id/toolbar"
+        android:minHeight="?attr/actionBarSize"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="#1DA1F2"
+        app:titleTextColor="@android:color/white"
+        >
+
+            <ImageView
+                android:id="@+id/twitter_logo"
+                android:background="#1DA1F2"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:adjustViewBounds="true"
+                android:contentDescription="new post image"
+                android:layout_gravity="center"
+                android:scaleType="centerCrop"
+                android:src="@drawable/twitterlogo"
+                android:visibility="visible" />
+
+
+
+    </androidx.appcompat.widget.Toolbar>
 
     <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
         android:layout_width="match_parent"
@@ -21,4 +49,4 @@
             android:layout_marginTop="0dp" />
 
     </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
-</RelativeLayout>
+</LinearLayout>

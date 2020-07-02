@@ -5,9 +5,14 @@ import android.content.Context;
 import com.codepath.asynchttpclient.RequestParams;
 import com.codepath.asynchttpclient.callback.JsonHttpResponseHandler;
 import com.codepath.oauth.OAuthBaseClient;
-import com.github.scribejava.apis.FlickrApi;
 import com.github.scribejava.apis.TwitterApi;
 import com.github.scribejava.core.builder.api.BaseApi;
+
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.Locale;
 
 /*
  * 
@@ -52,6 +57,15 @@ public class TwitterClient extends OAuthBaseClient {
 		params.put("since_id",1);
 		client.get(apiUrl, params, handler);
 	}
+
+	public void getNextPageOfTweets(JsonHttpResponseHandler handler, long maxId) {
+		String apiUrl = getApiUrl("statuses/home_timeline.json");
+		// Can specify query string params directly or through RequestParams.
+		RequestParams params = new RequestParams();
+		params.put("count", 25);
+		params.put("max_id",maxId);
+		client.get(apiUrl, params, handler);
+	}
 	//Make request to Post user tweet
 	public void postTweet(String tweetContent, JsonHttpResponseHandler handler){
 		String apiUrl = getApiUrl("statuses/update.json");
@@ -61,12 +75,72 @@ public class TwitterClient extends OAuthBaseClient {
 	}
 
 
-	/* 1. Define the endpoint URL with getApiUrl and pass a relative path to the endpoint
-	 * 	  i.e getApiUrl("statuses/home_timeline.json");
-	 * 2. Define the parameters to pass to the request (query or body)
-	 *    i.e RequestParams params = new RequestParams("foo", "bar");
-	 * 3. Define the request method and make a call to the client
-	 *    i.e client.get(apiUrl, params, handler);
-	 *    i.e client.post(apiUrl, params, handler);
+	/**
+	 * Given a date String of the format given by the Twitter API, returns a display-formatted
+	 * String representing the relative time difference, e.g. "2m", "6d", "23 May", "1 Jan 14"
+	 * depending on how great the time difference between now and the given date is.
+	 * This, as of 2016-06-29, matches the behavior of the official Twitter app.
 	 */
+	public static class TimeFormatter {
+		public static String getTimeDifference(String rawJsonDate) {
+			String time = "";
+			String twitterFormat = "EEE MMM dd HH:mm:ss ZZZZZ yyyy";
+			SimpleDateFormat format = new SimpleDateFormat(twitterFormat, Locale.ENGLISH);
+			format.setLenient(true);
+			try {
+				long diff = (System.currentTimeMillis() - format.parse(rawJsonDate).getTime()) / 1000;
+				if (diff < 5)
+					time = "Just now";
+				else if (diff < 60)
+					time = String.format(Locale.ENGLISH, "%ds",diff);
+				else if (diff < 60 * 60)
+					time = String.format(Locale.ENGLISH, "%dm", diff / 60);
+				else if (diff < 60 * 60 * 24)
+					time = String.format(Locale.ENGLISH, "%dh", diff / (60 * 60));
+				else if (diff < 60 * 60 * 24 * 30)
+					time = String.format(Locale.ENGLISH, "%dd", diff / (60 * 60 * 24));
+				else {
+					Calendar now = Calendar.getInstance();
+					Calendar then = Calendar.getInstance();
+					then.setTime(format.parse(rawJsonDate));
+					if (now.get(Calendar.YEAR) == then.get(Calendar.YEAR)) {
+						time = String.valueOf(then.get(Calendar.DAY_OF_MONTH)) + " "
+								+ then.getDisplayName(Calendar.MONTH, Calendar.SHORT, Locale.US);
+					} else {
+						time = String.valueOf(then.get(Calendar.DAY_OF_MONTH)) + " "
+								+ then.getDisplayName(Calendar.MONTH, Calendar.SHORT, Locale.US)
+								+ " " + String.valueOf(then.get(Calendar.YEAR) - 2000);
+					}
+				}
+			}  catch (ParseException e) {
+				e.printStackTrace();
+			}
+			return time;
+		}
+
+		/**
+		 * Given a date String of the format given by the Twitter API, returns a display-formatted
+		 * String of the absolute date of the form "30 Jun 16".
+		 * This, as of 2016-06-30, matches the behavior of the official Twitter app.
+		 */
+		public static String getTimeStamp(String rawJsonDate) {
+			String time = "";
+			String twitterFormat = "EEE MMM dd HH:mm:ss ZZZZZ yyyy";
+			SimpleDateFormat format = new SimpleDateFormat(twitterFormat, Locale.ENGLISH);
+			format.setLenient(true);
+			try {
+				Calendar then = Calendar.getInstance();
+				then.setTime(format.parse(rawJsonDate));
+				Date date = then.getTime();
+
+				SimpleDateFormat format1 = new SimpleDateFormat("h:mm a \u00b7 dd MMM yy");
+
+				time = format1.format(date);
+
+			}  catch (ParseException e) {
+				e.printStackTrace();
+			}
+			return time;
+		}
+	}
 }

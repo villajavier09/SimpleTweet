@@ -11,6 +11,7 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.resource.bitmap.RoundedCorners;
 import com.codepath.apps.restclienttemplate.models.Tweet;
 
 import java.util.List;
@@ -52,6 +53,16 @@ public class TweetsAdapter  extends RecyclerView.Adapter<TweetsAdapter.ViewHolde
         return tweets.size();
     }
 
+    @Override
+    public long getItemId(int position) {
+        return super.getItemId(position);
+    }
+
+    @Override
+    public int getItemViewType(int position) {
+        return super.getItemViewType(position);
+    }
+
     //Clean elements of recycler view upon refresh
     public void clear(){
         tweets.clear();
@@ -71,6 +82,7 @@ public class TweetsAdapter  extends RecyclerView.Adapter<TweetsAdapter.ViewHolde
         TextView tvBody;
         TextView tvScreenName;
         TextView timeStamp;
+        TextView userName;
         ImageView tweetImage;
 
 
@@ -83,16 +95,18 @@ public class TweetsAdapter  extends RecyclerView.Adapter<TweetsAdapter.ViewHolde
             tvBody = itemView.findViewById(R.id.tvBody);
             tvScreenName = itemView.findViewById(R.id.tvScreenName);
             timeStamp = itemView.findViewById(R.id.timeStamp);
+            userName = itemView.findViewById(R.id.userName);
             tweetImage = itemView.findViewById(R.id.tweetImage);
         }
 
         public void bind(Tweet tweet) {
             tvBody.setText(tweet.body);
-            tvScreenName.setText(tweet.user.screenName);
+            userName.setText(tweet.user.name);
+            tvScreenName.setText("@"+tweet.user.screenName);
             timeStamp.setText(tweet.createdAt);
-            Glide.with(context).load(tweet.user.profileImageUrl).into(ivProfileImage);
+            Glide.with(context).load(tweet.user.profileImageUrl).circleCrop().into(ivProfileImage);
             if(tweet.imageUrl != null) {
-                Glide.with(context).load(tweet.imageUrl).into(tweetImage);
+                Glide.with(context).load(tweet.imageUrl).transform(new RoundedCorners(50)).into(tweetImage);
             }
             else{
                 tweetImage.setVisibility(View.GONE);
