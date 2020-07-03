@@ -1,0 +1,34 @@
+Index: app/src/main/java/com/codepath/apps/restclienttemplate/ComposeTweetDialogFragment.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- app/src/main/java/com/codepath/apps/restclienttemplate/ComposeTweetDialogFragment.java	(date 1593703279000)
++++ app/src/main/java/com/codepath/apps/restclienttemplate/ComposeTweetDialogFragment.java	(date 1593703279000)
+@@ -58,7 +58,8 @@
+         etCompose = (EditText) view.findViewById(R.id.etCompose);
+         // Fetch arguments from bundle and set title
+         btnTweet = (Button) view.findViewById(R.id.btnTweet);
+-        client = TwitterApp.getRestClient(getActivity());
++
++        client = TwitterApp.getRestClient(this);
+ 
+         //Set click listener on button
+         btnTweet.setOnClickListener(new View.OnClickListener() {
+@@ -83,8 +84,8 @@
+                             Tweet tweet = Tweet.fromJson(json.jsonObject);
+                             Intent intent = new Intent();
+                             intent.putExtra("tweet", Parcels.wrap(tweet));
+-                            getActivity().setResult(getActivity().RESULT_OK,intent);
+-                            getActivity().finish();
++                            getActivity().setResult(RESULT_OK,intent);
++                            finish();
+                         } catch (JSONException e) {
+                             e.printStackTrace();
+                         }
+@@ -100,3 +101,4 @@
+ 
+     }
+     }
++}
+\ No newline at end of file

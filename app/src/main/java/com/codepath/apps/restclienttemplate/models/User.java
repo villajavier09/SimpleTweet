@@ -11,8 +11,9 @@ public class User {
     public String screenName;
     public String profileImageUrl;
 
+    public User() {
+    }
 
-    public User(){}
     //Create user object and assign corresponding information
     public static User fromJson(JSONObject jsonObject) throws JSONException {
         User user = new User();
@@ -20,7 +21,5 @@ public class User {
         user.screenName = jsonObject.getString("screen_name");
         user.profileImageUrl = jsonObject.getString("profile_image_url_https");
         return user;
-
-
     }
 }
