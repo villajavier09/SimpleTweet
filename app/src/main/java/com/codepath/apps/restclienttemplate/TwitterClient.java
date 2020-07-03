@@ -1,6 +1,7 @@
 package com.codepath.apps.restclienttemplate;
 
 import android.content.Context;
+import android.util.Log;
 
 import com.codepath.asynchttpclient.RequestParams;
 import com.codepath.asynchttpclient.callback.JsonHttpResponseHandler;
@@ -80,6 +81,13 @@ public class TwitterClient extends OAuthBaseClient {
         RequestParams params = new RequestParams();
         params.put("id", id);
         client.post(apiUrl, params, "", handler);
+    }
+
+    public void postRetweet(JsonHttpResponseHandler handler, long id){
+        String apiUrl = getApiUrl("/statuses/retweet/"+id+".json");
+        RequestParams params = new RequestParams();
+        Log.d("TwitterClient", "postRetweet: "+apiUrl);
+        client.post(apiUrl,"",handler);
     }
     /**
      * Given a date String of the format given by the Twitter API, returns a display-formatted

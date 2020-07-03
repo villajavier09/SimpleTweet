@@ -87,6 +87,7 @@ public class TweetsAdapter extends RecyclerView.Adapter<TweetsAdapter.ViewHolder
         TextView profileName;
         ImageView tweetImage;
         ImageView like;
+        ImageView retweet;
         ItemTweetBinding view;
 
         public ViewHolder(@NonNull ItemTweetBinding itemView) {
@@ -99,6 +100,7 @@ public class TweetsAdapter extends RecyclerView.Adapter<TweetsAdapter.ViewHolder
             profileName = view.profileName;
             tweetImage = view.tweetImage;
             like = view.like;
+            retweet = view.retweet;
             client = TwitterApp.getRestClient(context);
         }
 
@@ -115,6 +117,7 @@ public class TweetsAdapter extends RecyclerView.Adapter<TweetsAdapter.ViewHolder
             } else {
                 tweetImage.setVisibility(View.GONE);
             }
+
             like.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
@@ -123,6 +126,23 @@ public class TweetsAdapter extends RecyclerView.Adapter<TweetsAdapter.ViewHolder
                                          public void onSuccess(int statusCode, Headers headers, JSON json) {
                                              Log.i(TAG, "onSuccess");
                                              Glide.with(context).load(R.drawable.filled_heart).into(like);
+                                         }
+                                         @Override
+                                         public void onFailure(int statusCode, Headers headers, String response, Throwable throwable) {
+                                             Log.e(TAG, "onFailure" + response);
+                                         }
+                                     },
+                            id);
+                }
+            });
+            retweet.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    client.postRetweet(new JsonHttpResponseHandler() {
+                                         @Override
+                                         public void onSuccess(int statusCode, Headers headers, JSON json) {
+                                             Log.i(TAG, "onSuccess");
+                                             Glide.with(context).load(R.drawable.filled_retweet).into(retweet);
                                          }
                                          @Override
                                          public void onFailure(int statusCode, Headers headers, String response, Throwable throwable) {
