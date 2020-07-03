@@ -16,6 +16,8 @@ import java.util.List;
 public class Tweet {
     public static final String TAG = "Tweet";
     public long id;
+    public long likeCount;
+    public long retweetCount;
     public String body;
     public String createdAt;
     public User user;
@@ -31,6 +33,8 @@ public class Tweet {
         tweet.body = jsonObject.getString("text");
         tweet.createdAt = TwitterClient.TimeFormatter.getTimeDifference(jsonObject.getString("created_at"));
         tweet.id = jsonObject.getLong("id");
+        tweet.likeCount = jsonObject.getLong("favorite_count");
+        tweet.retweetCount = jsonObject.getLong("retweet_count");
         tweet.user = User.fromJson(jsonObject.getJSONObject("user"));
         try {
             tweet.imageUrl = jsonObject.getJSONObject("entities").getJSONArray("media").getJSONObject(0).getString("media_url_https");

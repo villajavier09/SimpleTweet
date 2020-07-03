@@ -82,6 +82,8 @@ public class TweetsAdapter extends RecyclerView.Adapter<TweetsAdapter.ViewHolder
     public class ViewHolder extends RecyclerView.ViewHolder {
         ImageView profileImage;
         TextView tweetBody;
+        TextView likeCount;
+        TextView retweetCount;
         TextView twitterUsername;
         TextView timeStamp;
         TextView profileName;
@@ -95,6 +97,8 @@ public class TweetsAdapter extends RecyclerView.Adapter<TweetsAdapter.ViewHolder
             view = itemView;
             profileImage = view.profileImage;
             tweetBody = view.tweetBody;
+            likeCount = view.likeCount;
+            retweetCount = view.retweetCount;
             twitterUsername = view.twitterUsername;
             timeStamp = view.timeStamp;
             profileName = view.profileName;
@@ -108,6 +112,8 @@ public class TweetsAdapter extends RecyclerView.Adapter<TweetsAdapter.ViewHolder
             tweetBody.setText(tweet.body);
             profileName.setText(tweet.user.name);
             twitterUsername.setText("@" + tweet.user.screenName);
+            likeCount.setText(String.valueOf(tweet.likeCount));
+            retweetCount.setText(String.valueOf(tweet.retweetCount));
             timeStamp.setText(tweet.createdAt);
             final long id =tweet.id;
             tweetImage.setVisibility(View.VISIBLE);
@@ -126,6 +132,7 @@ public class TweetsAdapter extends RecyclerView.Adapter<TweetsAdapter.ViewHolder
                                          public void onSuccess(int statusCode, Headers headers, JSON json) {
                                              Log.i(TAG, "onSuccess");
                                              Glide.with(context).load(R.drawable.filled_heart).into(like);
+                                             likeCount.setText(String.valueOf(tweet.likeCount + 1));
                                          }
                                          @Override
                                          public void onFailure(int statusCode, Headers headers, String response, Throwable throwable) {
@@ -143,6 +150,7 @@ public class TweetsAdapter extends RecyclerView.Adapter<TweetsAdapter.ViewHolder
                                          public void onSuccess(int statusCode, Headers headers, JSON json) {
                                              Log.i(TAG, "onSuccess");
                                              Glide.with(context).load(R.drawable.filled_retweet).into(retweet);
+                                             retweetCount.setText(String.valueOf(tweet.retweetCount + 1));
                                          }
                                          @Override
                                          public void onFailure(int statusCode, Headers headers, String response, Throwable throwable) {

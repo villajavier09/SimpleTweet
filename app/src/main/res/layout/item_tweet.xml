@@ -91,8 +91,8 @@
         android:layout_height="20dp"
         android:layout_below="@+id/tweetImage"
         android:layout_marginTop="8dp"
-        android:layout_toStartOf="@+id/like"
-        android:layout_toEndOf="@+id/reply"
+        android:layout_marginEnd="0dp"
+        android:layout_toStartOf="@+id/retweetCount"
         android:src="@drawable/empty_retweet"
         tools:srcCompat="@tools:sample/avatars" />
 
@@ -101,8 +101,35 @@
         android:layout_width="20dp"
         android:layout_height="20dp"
         android:layout_below="@+id/tweetImage"
-        android:layout_alignEnd="@+id/timeStamp"
         android:layout_marginTop="8dp"
+        android:layout_marginEnd="0dp"
+        android:layout_toStartOf="@+id/likeCount"
         android:src="@drawable/empty_heart"
         tools:srcCompat="@tools:sample/avatars" />
+
+    <TextView
+        android:id="@+id/likeCount"
+        android:layout_width="20dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="2dp"
+        android:layout_below="@+id/tweetImage"
+        android:layout_alignEnd="@+id/timeStamp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="0dp"
+        android:layout_centerHorizontal="true"
+        android:maxLines="1"
+        android:text="TextView" />
+
+    <TextView
+        android:id="@+id/retweetCount"
+        android:layout_width="20dp"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/tweetImage"
+        android:layout_marginTop="8dp"
+        android:layout_marginStart="2dp"
+        android:layout_marginEnd="100dp"
+        android:layout_toStartOf="@+id/like"
+        android:layout_centerHorizontal="true"
+        android:text="TextView"
+        android:maxLines="1"/>
 </RelativeLayout>
